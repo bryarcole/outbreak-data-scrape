@@ -1,0 +1,62 @@
+# Project Title: Texas Respiratory Virus Surveillance Data Fetcher
+
+## Overview
+This project is designed to fetch PDF data from a specified URL, extract tables from the PDF, and save the extracted data into a JSON file. The process is automated to run periodically using a background scheduler.
+
+## File Descriptions
+
+### `fetch-tx-data.py`
+This is the main script of the project. It performs the following functions:
+
+1. **Imports Required Libraries**:
+   - `requests`: For making HTTP requests to fetch web content.
+   - `BeautifulSoup`: For parsing HTML content and extracting links.
+   - `PyPDF2`, `io`, `pdfplumber`: For reading and extracting data from PDF files.
+   - `json`: For saving extracted data in JSON format.
+   - `Flask`: For creating a simple web server to indicate the status of the application.
+   - `apscheduler`: For scheduling the data fetching task to run at regular intervals.
+   - `datetime`: For handling date and time operations.
+   - `warnings`: To suppress warnings during execution.
+
+2. **Function Definitions**:
+   - `fetch_first_pdf_data(url)`: 
+     - Sends a GET request to the specified URL.
+     - Parses the HTML to find PDF links.
+     - Downloads the first PDF found and extracts tables from it using `extract_tables_from_pdf()`.
+   
+   - `extract_tables_from_pdf(pdf_content)`:
+     - Takes the content of a PDF file and extracts tables from each page.
+     - Returns a list of dictionaries containing headers and data for each table.
+
+   - `save_tables_to_json(tables_data, output_json_path)`:
+     - Saves the extracted table data into a JSON file at the specified path.
+
+   - `fetch_and_save_data()`:
+     - Main function that orchestrates the fetching of PDF data and saving it to JSON.
+     - Constructs the output JSON filename based on the current date.
+
+3. **Scheduler Setup**:
+   - Uses `BackgroundScheduler` to run the `fetch_and_save_data()` function every week.
+
+4. **Flask Web Server**:
+   - Sets up a simple Flask server that runs on port 5000.
+   - Provides an endpoint (`/`) that returns a JSON message indicating the server is running.
+
+5. **Execution**:
+   - The script starts the Flask server and the scheduler when executed.
+
+## Usage
+1. Ensure you have the required libraries installed. You can install them using:
+   ```bash
+   pip install requests beautifulsoup4 PyPDF2 pdfplumber Flask apscheduler
+   ```
+
+2. Run the script:
+   ```bash
+   python fetch-tx-data.py
+   ```
+
+3. Access the server at `http://localhost:5000/` to check if it is running.
+
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
