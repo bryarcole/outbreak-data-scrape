@@ -1,6 +1,16 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+from flask import Flask, jsonify
+from apscheduler.schedulers.background import BackgroundScheduler
+from datetime import datetime  # Import the datetime module
+import warnings
+
+# Suppress all warnings
+warnings.filterwarnings("ignore")
+
+# Create the Flask app instance
+app = Flask(__name__)
 
 def fetch_table_data():
     # URL of the Texas COVID-19 Surveillance page
@@ -31,11 +41,26 @@ def fetch_table_data():
     for row in table_data:
         json_data.append(dict(zip(headers, row)))
 
+    current_date = datetime.now().strftime('%-m.%-d.%Y')  # Format: M.D.YYYY
+
     # Save the data to a JSON file
-    with open('texas_covid_data.json', 'w') as json_file:
+    with open(f'texas_covid_data_{current_date}.json', 'w') as json_file:
         json.dump(json_data, json_file, indent=4)
 
     print("Data has been written to texas_covid_data.json")
 
-# Run the function
+# Set up the scheduler
+scheduler = BackgroundScheduler()
 fetch_table_data()
+scheduler.add_job(fetch_table_data, 'interval', weeks=1)  # Adjust the interval as needed
+scheduler.start()
+
+@app.route('/')
+def index():
+    return jsonify({"message": "Server is running and will fetch data periodically."})
+
+if __name__ == '__main__':
+    try:
+        app.run(port=4999)  # Run the Flask server on port 5000
+    except (KeyboardInterrupt, SystemExit):
+        scheduler.shutdown()  # Shut down the scheduler when exiting

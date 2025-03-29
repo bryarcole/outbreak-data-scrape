@@ -9,6 +9,12 @@ from reportlab.pdfgen import canvas
 from flask import Flask, jsonify
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime  # Import the datetime module
+import warnings
+
+# Suppress all warnings
+warnings.filterwarnings("ignore")
+
+app = Flask(__name__)
 
 def fetch_first_pdf_data(url):
     # Send a GET request to the URL
@@ -60,7 +66,6 @@ def save_tables_to_json(tables_data, output_json_path):
     with open(output_json_path, 'w') as json_file:
         json.dump(tables_data, json_file, indent=4)  # Save the tables data to a JSON file
 
-app = Flask(__name__)
 
 # Function to fetch PDF data and save to JSON
 def fetch_and_save_data():
@@ -77,6 +82,7 @@ def fetch_and_save_data():
 
 # Set up the scheduler
 scheduler = BackgroundScheduler()
+fetch_and_save_data()
 scheduler.add_job(fetch_and_save_data, 'interval', weeks=1)  # Adjust the interval as needed
 scheduler.start()
 
