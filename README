@@ -1,7 +1,7 @@
 # Project Title: Texas Respiratory Virus Surveillance Data Fetcher
 
 ## Overview
-This project is designed to fetch PDF data from a specified URL, extract tables from the PDF, and save the extracted data into a JSON file. The process is automated to run periodically using a background scheduler.
+This project is designed to automatically fetch PDF data from a specified URL, extract tables from the PDF, and save the extracted data into a JSON file. The process is scheduled to run periodically.
 
 ## File Descriptions
 
@@ -19,20 +19,28 @@ This is the main script of the project. It performs the following functions:
    - `warnings`: To suppress warnings during execution.
 
 2. **Function Definitions**:
-   - `fetch_first_pdf_data(url)`: 
+   - **`fetch_first_pdf_data(url)`**: 
      - Sends a GET request to the specified URL.
      - Parses the HTML to find PDF links.
      - Downloads the first PDF found and extracts tables from it using `extract_tables_from_pdf()`.
-   
-   - `extract_tables_from_pdf(pdf_content)`:
-     - Takes the content of a PDF file and extracts tables from each page.
-     - Returns a list of dictionaries containing headers and data for each table.
 
-   - `save_tables_to_json(tables_data, output_json_path)`:
+   - **`extract_tables_from_pdf(pdf_content)`**:
+     - Takes the content of a PDF file and extracts tables from each page.
+     - Each page's data is formatted into a dictionary with the following structure:
+       ```json
+       {
+           "Title": "Title of page",
+           "Table1": "Table Name",
+           "TableDataHeader": ["Header1", "Header2"],
+           "TableData": [["data1", "data2"], ["data3", "data4"]]
+       }
+       ```
+
+   - **`save_tables_to_json(tables_data, output_json_path)`**:
      - Saves the extracted table data into a JSON file at the specified path.
 
-   - `fetch_and_save_data()`:
-     - Main function that orchestrates the fetching of PDF data and saving it to JSON.
+   - **`fetch_and_save_data()`**:
+     - Orchestrates the fetching of PDF data and saving it to JSON.
      - Constructs the output JSON filename based on the current date.
 
 3. **Scheduler Setup**:
@@ -41,9 +49,6 @@ This is the main script of the project. It performs the following functions:
 4. **Flask Web Server**:
    - Sets up a simple Flask server that runs on port 5000.
    - Provides an endpoint (`/`) that returns a JSON message indicating the server is running.
-
-5. **Execution**:
-   - The script starts the Flask server and the scheduler when executed.
 
 ## Usage
 1. Ensure you have the required libraries installed. You can install them using:
