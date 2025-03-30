@@ -1,0 +1,59 @@
+[
+    {
+        "Component": "New COVID-19 Cases (Probable and Confirmed)**",
+        "Change from Previous Week": "\u25b2 584",
+        "Current Week": "19,301",
+        "Previous Week": "18,717"
+    },
+    {
+        "Component": "New COVID-19 Confirmed Cases**",
+        "Change from Previous Week": "\u25b2 356",
+        "Current Week": "8,553",
+        "Previous Week": "8,197"
+    },
+    {
+        "Component": "New COVID-19 Probable Cases**",
+        "Change from Previous Week": "\u25b2 228",
+        "Current Week": "10,748",
+        "Previous Week": "10,520"
+    },
+    {
+        "Component": "Total COVID-19 Cases (Probable and Confirmed)**",
+        "Change from Previous Week": "\u25b2\u00a019,301",
+        "Current Week": "9,030,821",
+        "Previous Week": "9,011,520"
+    },
+    {
+        "Component": "Total\u00a0COVID-19 Confirmed Cases**",
+        "Change from Previous Week": "\u25b2\u00a08,553",
+        "Current Week": "6,916,102",
+        "Previous Week": "6,907,549"
+    },
+    {
+        "Component": "Total\u00a0COVID-19 Probable Cases**",
+        "Change from Previous Week": "\u25b2 10,748",
+        "Current Week": "2,114,719",
+        "Previous Week": "2,103,971"
+    },
+    {
+        "Component": "Newly Reported\u00a0COVID-19-Associated Fatalities",
+        "Change from Previous Week": "\u25b2\u00a014",
+        "Current Week": "60",
+        "Previous Week": "46"
+    },
+    {
+        "Component": "Hospitalized\u00a0COVID-19 Cases (day of report)",
+        "Change from Previous Week": "\u25bc\u00a0151",
+        "Current Week": "1,799",
+        "Previous Week": "1,950"
+    },
+    {
+        "Component": "Hospitalized\u00a0COVID-19 Cases (rolling 7 day average)",
+        "Change from Previous Week": "\u25b2 1",
+        "Current Week": "1,939",
+        "Previous Week": "1,938"
+    },
+    {
+        "Component": "\u25b2 = increase and \u25bc = decrease*Numbers and percentages might vary from the previous COVID-19 report due to additional data becoming available for non-finalized surveillance years. COVID-19 case data for 2020-2021 are finalized. All other data are provisional and subject to change.**Cases for the current week include both cases reported in the last week and may include newly reported cases from prior weeks."
+    }
+]

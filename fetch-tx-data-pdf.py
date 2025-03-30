@@ -51,14 +51,26 @@ def extract_tables_from_pdf(pdf_content):
 
     with pdfplumber.open(io.BytesIO(pdf_content)) as pdf:
         for page in pdf.pages:
+            # Extract the title of the page (assuming it's the first text element)
+            title = page.extract_text().split('\n')[0] if page.extract_text() else "Untitled Page"
+
             tables = page.extract_tables()
-            for table in tables:
-                # Append the table data to the list
-                table_dict = {
-                    "headers": table[0],  # First row as headers
-                    "data": table[1:]     # Remaining rows as data
+            if not tables:
+                continue  # Skip the page if no tables are found
+
+            for i, table in enumerate(tables):
+                # Extract the table title (assuming it's the first row)
+                table_title = table[0][0] if table and table[0] else f"Table {i + 1}"
+
+                # Prepare the data for the JSON structure
+                table_data = {
+                    "Title": title,
+                    f"Table{i + 1}": table_title,
+                    "TableDataHeader": table[0][1:],  # Assuming the second row contains headers
+                    "TableData": [row[1:] for row in table[1:]]  # Extracting data rows
                 }
-                tables_data.append(table_dict)
+
+                tables_data.append(table_data)
 
     return tables_data
 
@@ -76,9 +88,9 @@ def fetch_and_save_data():
     current_date = datetime.now().strftime('%-m.%-d.%Y')  # Format: M.D.YYYY
 
     # Construct the output JSON path with the current date
-    output_json_path = f'output_tables_{current_date}.json'  # Output JSON path
-    save_tables_to_json(tables_data, output_json_path)
-    print(f"Extracted tables saved to {output_json_path}")
+    pdf_data_tables = f'pdf_data_tables_{current_date}.json'  # Output JSON path
+    save_tables_to_json(tables_data, pdf_data_tables)
+    print(f"Extracted tables saved to {pdf_data_tables}")
 
 # Set up the scheduler
 scheduler = BackgroundScheduler()
