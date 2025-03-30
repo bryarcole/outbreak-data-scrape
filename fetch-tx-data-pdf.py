@@ -54,20 +54,31 @@ def extract_tables_from_pdf(pdf_content):
             # Extract the title of the page (assuming it's the first text element)
             title = page.extract_text().split('\n')[0] if page.extract_text() else "Untitled Page"
 
+            # Extract all text from the page
+            page_text = page.extract_text().split('\n') if page.extract_text() else []
             tables = page.extract_tables()
+
             if not tables:
                 continue  # Skip the page if no tables are found
 
             for i, table in enumerate(tables):
-                # Extract the table title (assuming it's the first row)
-                table_title = table[0][0] if table and table[0] else f"Table {i + 1}"
+                if table and table[0]:
+                    # Attempt to find the header text that directly precedes the table
+                    header_text = table[0][0]
+                    if header_text in page_text:
+                        header_index = page_text.index(header_text) - 1
+                        table_header = page_text[header_index] if header_index >= 0 else f"Table {i + 1}"
+                    else:
+                        table_header = f"Table {i + 1}"  # Default if header not found
+                else:
+                    table_header = f"Table {i + 1}"  # Default if table is empty
 
                 # Prepare the data for the JSON structure
                 table_data = {
                     "Title": title,
-                    f"Table{i + 1}": table_title,
-                    "TableDataHeader": table[0][1:],  # Assuming the second row contains headers
-                    "TableData": [row[1:] for row in table[1:]]  # Extracting data rows
+                    f"Table{i + 1}": table_header,
+                    "TableDataHeader": table[0],  # First row as headers
+                    "TableData": table[1:]  # Remaining rows as data
                 }
 
                 tables_data.append(table_data)
